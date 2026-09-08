@@ -16,10 +16,7 @@ private:
     std::vector<double> data_;
 
 public:
-    Grid(std::size_t rows, size_t cols) : rows_(rows), cols_(cols), data_(rows * cols, 0.0) {
-        #pragma omp parallel
-        {}
-    }
+    Grid(std::size_t rows, size_t cols) : rows_(rows), cols_(cols), data_(rows * cols, 0.0) {}
 
     double& operator()(size_t i, size_t j) { return data_[i * cols_ + j]; }
     double  operator()(size_t i, size_t j) const { return data_[i * cols_ + j]; }
