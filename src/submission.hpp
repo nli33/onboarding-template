@@ -16,7 +16,10 @@ private:
     std::vector<double> data_;
 
 public:
-    Grid(std::size_t rows, size_t cols) : rows_(rows), cols_(cols), data_(rows * cols, 0.0) {}
+    Grid(std::size_t rows, size_t cols) : rows_(rows), cols_(cols), data_(rows * cols, 0.0) {
+        #pragma omp parallel
+        {}
+    }
 
     double& operator()(size_t i, size_t j) { return data_[i * cols_ + j]; }
     double  operator()(size_t i, size_t j) const { return data_[i * cols_ + j]; }
@@ -33,7 +36,7 @@ public:
 inline void apply_stencil(const Grid& old_grid, Grid& new_grid) {
     const size_t rows = old_grid.rows();
     const size_t cols = old_grid.cols();
-    
+
     std::memcpy(new_grid.data(), 
         old_grid.data(), 
         cols * sizeof(double));
